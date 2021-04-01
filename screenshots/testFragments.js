@@ -13,16 +13,20 @@ const click = selector => `await t.click('${selector}');`;
 const start = ({url}) => `await t.navigateTo('${url}');`;
 
 const createScreenshot = path => `await t.takeScreenshot('${path}');`;
-const wrapTest = body => `test('MyTest', async t => {
+const wrapTest = (body, name) => `test('${name}', async t => {
   ${body}
 });
 `;
 
+const annotate = ({selector, text, position}) =>
+  `await addAnnotation(Selector('${selector}'), '${text}', ${position});`;
+
 const consumers = {
   start: append(start),
   click: append(click),
-  stop: (res, {screenshotPath}) =>
-    wrapTest(append(createScreenshot)(res, screenshotPath))
+  annotation: append(annotate),
+  stop: (res, {screenshotPath, screenshotName}) =>
+    wrapTest(append(createScreenshot)(res, screenshotPath), screenshotName)
 };
 
 export const createTest = actions => {

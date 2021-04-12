@@ -170,6 +170,9 @@ export const addAnnotation = function() {
         }
 
         if (event.key === 'Enter' && !event.shiftKey) {
+          document.querySelectorAll(`.${uid}`).forEach(el => {
+            el.remove();
+          });
           annotateElement(element, event.target.innerText, position);
           done(element, event.target.innerText, position);
         }

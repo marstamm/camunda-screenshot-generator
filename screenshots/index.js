@@ -24,7 +24,10 @@ document.addEventListener(
     if (recording)
       actions.push({
         event: 'click',
-        data: finder(event.target)
+        data: finder(event.target, {
+          attr: (name, value) => name.startsWith('uib-'),
+          className: name => !name.startsWith('ng-')
+        })
       });
   },
   true
